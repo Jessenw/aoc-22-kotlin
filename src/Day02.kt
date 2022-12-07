@@ -1,21 +1,18 @@
+import java.io.File
+
 fun main() {
-    /*
-    A,X = Rock -> 1
-    B, Y = Paper -> 2
-    C, Z = Scissors -> 3
-    0 = Lost
-    3 = Draw
-    6 = Won
-     */
     fun part1(input: List<String>) =
         input
-            .map { line ->
-                val split = line.split(" ")
-                Pair(scoreForPlay(split[0]), scoreForPlay(split[1]))
-            }.sumOf { round ->
+            .sumOf {
+                val split = it.split(" ")
+                val round = Pair(scoreForPlay(split[0]), scoreForPlay(split[1]))
                 val roundPoints =
                     if (round.first == round.second) 3
-                    else if (round.first < round.second) 6
+                    else if (round.second == 1 && round.first == 3
+                        || round.second == 3 && round.first == 2
+                        || round.second == 2 && round.first == 1) {
+                        6
+                    }
                     else {
                         0
                     }
@@ -28,12 +25,12 @@ fun main() {
 
     val testInput = readInputLines("Day02_test")
     println(part1(testInput))
-//    println(part2(testInput))
+    println(part2(testInput))
     check(part1(testInput) == 15)
 //    check(part2(testInput) == 45000)
 
-//    val input = readInputText("Day01")
-//    println(part1(input))
+    val input = readInputLines("Day02")
+    println(part1(input))
 //    println(part2(input))
 }
 
