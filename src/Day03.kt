@@ -39,4 +39,4 @@ fun main() {
     println(part2(input))
 }
 
-fun getItemPriority(char: Char) : Int = if (char.isLowerCase()) char.code - 96 else char.code - 64 + 26
+fun getItemPriority(char: Char) = if (char.isLowerCase()) char.code - 96 else char.code - 64 + 26

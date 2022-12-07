@@ -16,13 +16,12 @@ fun main() {
         return maxCalories
     }
 
-    fun part2(input: String): Int {
+    fun part2(input: String) : Int {
         // Find the total amount of calories each elf if carrying
         val totalCalories = input.split("\n\n")
             .map { bag ->
                 bag.lines().sumOf {
-                    // A hack to get around empty strings
-                    if (it != "") it.toInt() else 0
+                    it.toIntOrNull() ?: 0 // Handle empty string
                 }
             }
 
