@@ -12,24 +12,31 @@ fun main() {
                 }
                 .filter { it != '%' }
                 .distinct()
-                .sumOf {
-                    // Get UTF-16 code, offset to start at 0 and then apply our
-                    // own offset depending on the chars case:
-                    // Lowercase 1 -> 16, Uppercase 27 -> 52
-                    if (it.isLowerCase()) it.code - 96 else it.code - 64 + 26
-                }
+                .sumOf { getItemPriority(it) }
         }
 
-    fun part2(input: List<String>) {
-
-    }
+    fun part2(input: List<String>) =
+        input
+            .map { it.toCharArray() }
+            .chunked(3) { group ->
+                group[0]
+                    .map {
+                        if (group[1].contains(it) && group[2].contains(it)) it else '%'
+                    }
+                    .filter { it != '%' }
+                    .distinct()
+                    .sumOf { getItemPriority(it) }
+            }
+            .sum()
 
     val testInput = readInputLines("Day03_test")
     println(part1(testInput))
     check(part1(testInput) == 157)
-//    check(part2(testInput) == 12)
+    check(part2(testInput) == 70)
 
     val input = readInputLines("Day03")
     println(part1(input))
-//    println(part2(input))
+    println(part2(input))
 }
+
+fun getItemPriority(char: Char) : Int = if (char.isLowerCase()) char.code - 96 else char.code - 64 + 26
