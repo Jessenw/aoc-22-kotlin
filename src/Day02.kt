@@ -3,28 +3,31 @@ fun main() {
         input
             .sumOf {
                 val split = it.split(" ")
-                val round = Pair(scoreForPlay(split[0]), scoreForPlay(split[1]))
+                val opponentPlay = scoreForPlay(split[0])
+                val myPlay = scoreForPlay(split[1])
+
                 val roundPoints =
-                    if (round.first == round.second) 3
-                    else if (round.second == 1 && round.first == 3
-                        || round.second == 3 && round.first == 2
-                        || round.second == 2 && round.first == 1) 6
+                    if (opponentPlay == myPlay) 3
+                    else if (myPlay == 1 && opponentPlay == 3
+                        || myPlay == 3 && opponentPlay == 2
+                        || myPlay == 2 && opponentPlay == 1) 6
                     else 0
-                roundPoints + round.second
+                roundPoints + myPlay
             }
 
     fun part2(input: List<String>) =
         input
             .sumOf {
                 val split = it.split(" ")
-                val round = Pair(scoreForPlay(split[0]), scoreForPlay(split[1]))
+                val opponentPlay = scoreForPlay(split[0])
+                val outcome = scoreForPlay(split[1])
 
-                if (round.second == 1)
-                    if (round.first - 1 < 1) 3 else round.first - 1
-                else if (round.second == 2)
-                    round.first + 3
+                if (outcome == 1)
+                    if (opponentPlay - 1 < 1) 3 else opponentPlay - 1
+                else if (outcome == 2)
+                    opponentPlay + 3
                 else
-                    (if (round.first + 1 > 3) 1 else round.first + 1) + 6
+                    (if (opponentPlay + 1 > 3) 1 else opponentPlay + 1) + 6
             }
 
     val testInput = readInputLines("Day02_test")
