@@ -1,19 +1,18 @@
 fun main() {
     fun part1(input: List<String>): Int =
         input.map { pair ->
-            val sections = pair.split(",")
-            val section1 = sections[0].split("-")
-                .map { it.toInt() }
-            val section2 = sections[1].split("-")
-                .map { it.toInt() }
+            val sections =
+                pair.split(",")
+                    .map { ranges ->
+                        ranges.split("-")
+                            .map { it.toInt() }
+                    }
+                    .map { Pair(it[0], it[1]) }
 
-            // Check which Elf has the potential to have their sections
-            // already covered
-            return@map if ((section1[0] >= section2[0] && section1[1] <= section2[1])
-                || (section2[0] >= section1[0] && section2[1] <= section1[1])) 1
-            else 0
-        }
-            .sum()
+            if (rangeInRange(sections[0], sections[1])
+                || rangeInRange(sections[1], sections[0])) 1
+                else 0
+        }.sum()
 
     fun part2(input: List<String>) {
 
@@ -27,3 +26,5 @@ fun main() {
     check(part1(input) == 413)
 //    println(part2(input))
 }
+fun rangeInRange(a: Pair<Int, Int>, b: Pair<Int, Int>) =
+    a.first >= b.first && a.second <= b.second
