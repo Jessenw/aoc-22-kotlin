@@ -1,12 +1,8 @@
 fun main() {
-    fun part1(input: List<String>): Int =
+    fun part1(input: List<String>) =
         input.map { pair ->
             val sections =
-                pair.split(",")
-                    .map { ranges ->
-                        ranges.split("-")
-                            .map { it.toInt() }
-                    }
+                processRangePair(pair)
                     .map { Pair(it[0], it[1]) }
 
             if (rangeInRange(sections[0], sections[1])
@@ -14,14 +10,10 @@ fun main() {
                 else 0
         }.sum()
 
-    fun part2(input: List<String>): Int {
-        return input.map { pair ->
+    fun part2(input: List<String>) =
+        input.map { pair ->
             val sections =
-                pair.split(",")
-                    .map { ranges ->
-                        ranges.split("-")
-                            .map { it.toInt() }
-                    }
+                processRangePair(pair)
                     .map {
                         // Generate range of values with given start and end
                         (it[1] downTo it[0]).toList()
@@ -32,7 +24,6 @@ fun main() {
             if (sections.distinct().size != sections.size) 1
             else 0
         }.sum()
-    }
 
     val testInput = readInputLines("Day04_test")
     part2(testInput)
@@ -43,5 +34,17 @@ fun main() {
     check(part1(input) == 413)
     check(part2(input) == 806)
 }
+
+fun processRangePair(pair: String) =
+    pair.split(",")
+        .map { ranges ->
+            ranges.split("-")
+                .map { it.toInt() }
+        }
+
+/**
+ * Check if a pair (a) of values fully exists within another pair (b)
+ * Note: Assumes the first value in a pair is the lower bound
+ */
 fun rangeInRange(a: Pair<Int, Int>, b: Pair<Int, Int>) =
     a.first >= b.first && a.second <= b.second
