@@ -1,5 +1,30 @@
 import java.io.File
 
+fun main() {
+    fun part1(input: List<String>): String {
+        val stacks: List<ArrayDeque<String>> = buildStacks(input[0].lines())
+        val moves: List<List<Int>> = buildMoves(input[1].lines())
+
+        moves.forEach {
+            for (i in 0 until it[0])
+                stacks[it[2] - 1].addLast(stacks[it[1] - 1].removeLast())
+        }
+
+        return stacks.joinToString("") { it.removeLast() }
+    }
+
+    fun part2(input: List<String>) {
+
+    }
+
+    val testInput = readInputText("Day05_test").split("\n\n")
+    check(part1(testInput) == "CMZ")
+//    check(part2(testInput) == 12)
+
+    val input = readInputText("Day05").split("\n\n")
+    println(part1(input))
+//    println(part2(input))
+}
 
 fun buildStacks(lines: List<String>): List<ArrayDeque<String>> {
     val stackCount = lines
@@ -35,22 +60,12 @@ fun buildStacks(lines: List<String>): List<ArrayDeque<String>> {
     return stacks
 }
 
-fun main() {
-    fun part1(stacks: List<ArrayDeque<String>>, moves: String): String {
-
-        return ""
-    }
-
-    fun part2(input: List<String>) {
-
-    }
-
-    val file = File("input", "Day05_test.txt").readText()
-    val splitFile = file.split("\n\n")
-    check(part1(buildStacks(splitFile[0].lines()), splitFile[1]) == "CMZ")
-//    check(part2(testInput) == 12)
-//
-//    val input = readInputLines("Day03")
-//    println(part1(input))
-//    println(part2(input))
-}
+fun buildMoves(lines: List<String>) =
+    lines
+        .map { line ->
+            line.split(" ")
+                .filterIndexed { index, _ ->
+                    index % 2 != 0
+                }
+                .map { it.toInt() }
+        }
