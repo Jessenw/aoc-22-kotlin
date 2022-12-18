@@ -1,29 +1,25 @@
 fun main() {
-    fun part1(input: String): Int {
-        val buffer = ArrayDeque<Char>()
-        val monkey = input
-            .toCharArray()
-            .indexOfFirst { element ->
-                buffer.addLast(element)
-                if (buffer.size > 4) buffer.removeFirst()
-                if (buffer.size > 3) return@indexOfFirst (buffer.distinct().size > 3)
+    fun part1(input: String) = distinctIndex(input, 4)
 
-                return@indexOfFirst false
-            }
-        return monkey + 1
-    }
-
-    fun part2(input: List<String>) {
-
-    }
+    fun part2(input: String) = distinctIndex(input, 14)
 
     check(part1("bvwbjplbgvbhsrlpgdmjqwftvncz") == 5)
-    check(part1("nppdvjthqldpwncqszvftbrmjlhg") == 6)
-    check(part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg") == 10)
-    check(part1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw") == 11)
-//    check(part2(testInput) == 12)
+    check(part2("mjqjpqmgbljsphdztnvjfqwrcgsmlb") == 19)
 
     val input = readInputText("Day06")
     println(part1(input))
-//    println(part2(input))
+    println(part2(input))
+}
+
+fun distinctIndex(input: String, nElements: Int): Int {
+    val buffer = ArrayDeque<Char>()
+    return input
+        .toCharArray()
+        .indexOfFirst {
+            buffer.addLast(it)
+            if (buffer.size > nElements) buffer.removeFirst()
+            if (buffer.size > nElements - 1) return@indexOfFirst (buffer.distinct().size > nElements - 1)
+
+            return@indexOfFirst false
+        } + 1
 }
