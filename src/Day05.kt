@@ -1,5 +1,3 @@
-import java.io.File
-
 fun main() {
     fun part1(input: List<String>): String {
         val stacks: List<ArrayDeque<String>> = buildStacks(input[0].lines())
@@ -13,17 +11,30 @@ fun main() {
         return stacks.joinToString("") { it.removeLast() }
     }
 
-    fun part2(input: List<String>) {
+    fun part2(input: List<String>): String {
+        val stacks: List<ArrayDeque<String>> = buildStacks(input[0].lines())
+        val moves: List<List<Int>> = buildMoves(input[1].lines())
 
+        moves.forEach {
+            val temp = mutableListOf<String>()
+            for (i in 0 until it[0]) {
+                temp.add(stacks[it[1] - 1].removeLast())
+            }
+            temp.reversed().forEach { t ->
+                stacks[it[2] - 1].addLast(t)
+            }
+        }
+
+        return stacks.joinToString("") { it.removeLast() }
     }
 
     val testInput = readInputText("Day05_test").split("\n\n")
     check(part1(testInput) == "CMZ")
-//    check(part2(testInput) == 12)
+    check(part2(testInput) == "MCD")
 
     val input = readInputText("Day05").split("\n\n")
     println(part1(input))
-//    println(part2(input))
+    println(part2(input))
 }
 
 fun buildStacks(lines: List<String>): List<ArrayDeque<String>> {
